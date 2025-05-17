@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import asyncio
 import functools
-from typing import Any, Callable, Awaitable, get_type_hints
 import inspect
+from typing import Any, Awaitable, Callable, get_type_hints
 
 
 def strict(
-        function: Callable[..., Awaitable[Any] | Any],
+    function: Callable[..., Awaitable[Any] | Any],
 ) -> Callable[..., Awaitable[Any] | Any]:
     @functools.wraps(function)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -35,18 +35,22 @@ def strict(
                         raise TypeError
 
         if asyncio.iscoroutinefunction(function):
+
             async def async_wrapped() -> Any:
                 async_return_value = await function(*args, **kwargs)
                 if (
-                        async_return_type_hint := type_hints.get("return")
-                ) is not None and not isinstance(async_return_value, async_return_type_hint):
+                    async_return_type_hint := type_hints.get("return")
+                ) is not None and not isinstance(
+                    async_return_value, async_return_type_hint
+                ):
                     raise TypeError
                 return async_return_value
+
             return async_wrapped()
         else:
             return_value = function(*args, **kwargs)
             if (
-                    return_type_hint := type_hints.get("return")
+                return_type_hint := type_hints.get("return")
             ) is not None and not isinstance(return_value, return_type_hint):
                 raise TypeError
             return return_value

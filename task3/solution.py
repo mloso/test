@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 def process_interval(
     interval: list[int], lesson_start: int, lesson_end: int
 ) -> list[tuple[int, int]]:

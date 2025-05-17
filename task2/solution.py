@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import asyncio
+import csv
+import re
+from collections import defaultdict
+
 import aiohttp
 from bs4 import BeautifulSoup
-import csv
-from collections import defaultdict
-import asyncio
-import re
+
 
 async def process_page(session, url, letter_counts) -> str | None:
     async with session.get(url) as response:
@@ -52,6 +54,7 @@ def save_to_csv(counts, filename="beasts.csv") -> None:
 
 async def main() -> None:
     save_to_csv(counts=await get_animals_count())
+
 
 if __name__ == "__main__":
     asyncio.run(main())
