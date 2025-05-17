@@ -35,7 +35,6 @@ def strict(
                         raise TypeError
 
         if asyncio.iscoroutinefunction(function):
-
             async def async_wrapped() -> Any:
                 async_return_value = await function(*args, **kwargs)
                 if (
